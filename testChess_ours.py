@@ -59,7 +59,18 @@ scaler.transform(xTraining)
 scaler.transform(xTesting)
 scaler.transform(xValidation)
 
-nn = NN(layer=[6, 20, 20, 20, 20, 2],active_function='sigmoid',batch_size = 100,learning_rate = 0.01,optimization_method='Momentum', batch_normalization = 1, objective_function='Cross Entropy')
+nn = NN(
+    layer=[6, 20, 20, 2],
+    active_function='sigmoid',
+    batch_size=100,
+    learning_rate=0.01,
+    optimization_method='RMSPropNesterov',
+    rho=0.9,
+    alpha=0.9,
+    stability_constant=1e-8,
+    batch_normalization=1,
+    objective_function='Cross Entropy'
+)
 epoch = 0
 maxAccuracy = 0
 totalAccuracy = []
@@ -67,21 +78,22 @@ totalCost = []
 maxEpoches = 100
 for epoch in range(maxEpoches):
 #    epoch +=1
+    nn.cost.clear()
     nn = nn_train(nn, xTraining, yTraining)
     totalCost.append(sum(nn.cost.values()) / len(nn.cost.values()))
     _, _, accuracy,_ = nn_test(nn, xValidation, yValidation)
     totalAccuracy.append(accuracy)
     if accuracy > maxAccuracy:
         maxAccuracy = accuracy
-        save_variable(nn, 'storedNN_Chess.npz')
-    cost = totalCost[epoch - 1]
+        save_variable(nn, 'storedNN_Chess_Ours.npz')
+    cost = totalCost[-1]
     print('Epoch:',epoch)
     print('Accuracy:',accuracy)
-    print('Cost:',totalCost[epoch - 1])
+    print('Cost:',totalCost[-1])
 
-if os.path.exists('storedNN_Chess.npz'):
-    storedNN_Chess = load_variable('storedNN_Chess.npz')
-    wrongs, yPred, accuracy, yOutput = nn_test(storedNN_Chess, xTesting, yTesting)
+if os.path.exists('storedNN_Chess_Ours.npz'):
+    storedNN_Chess_Ours = load_variable('storedNN_Chess_Ours.npz')
+    wrongs, yPred, accuracy, yOutput = nn_test(storedNN_Chess_Ours, xTesting, yTesting)
     decisionValues = yOutput[:,0]
     print('Accuracy on Testset:', accuracy)
     truePositive,trueNegative,falsePositive,falseNegative = 0,0,0,0
