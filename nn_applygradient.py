@@ -2,6 +2,26 @@ import numpy as np
 
 def nn_applygradient(nn):
     method = nn.optimization_method
+    if method == 'RMSPropNesterov':
+        # nn_train has computed these gradients at theta + alpha * v
+        # and restored theta before entering this function.
+        names = ['W', 'b']
+        if nn.batch_normalization:
+            names += ['Gamma', 'Beta']
+        for name in names:
+            parameters = getattr(nn, name)
+            gradients = getattr(nn, name + '_grad')
+            accumulation = getattr(nn, 'r' + name)
+            velocity = getattr(nn, 'v' + name)
+            for k in range(nn.depth - 1):
+                g = gradients[k]
+                accumulation[k] = nn.rho * accumulation[k] + (1 - nn.rho) * g**2
+                velocity[k] = (nn.alpha * velocity[k]
+                               - nn.learning_rate * g
+                               / (np.sqrt(accumulation[k]) + nn.stability_constant))
+                parameters[k] = parameters[k] + velocity[k]
+        return nn
+
     if method == 'AdaGrad' or method == 'RMSProp' or method == 'Adam':
         grad_squared = 0
         if nn.batch_normalization == 0:

@@ -31,3 +31,4 @@ ENV/
 Thumbs.db
 
 logs/
+checkpoint/

@@ -11,7 +11,10 @@ class NN:
                 'cost':{}, 
                 'batch_normalization':0,
                 'optimization_method':'normal',
-                'objective_function':'MSE'
+                'objective_function':'MSE',
+                'rho':0.9,
+                'alpha':0.9,
+                'stability_constant':1e-8
                }
         
         param = dict() #字典结构实现参数列表
@@ -28,6 +31,16 @@ class NN:
         self.batch_normalization = param['batch_normalization']
         self.optimization_method = param['optimization_method']
         self.objective_function = param['objective_function']
+        self.rho = param['rho']
+        self.alpha = param['alpha']
+        self.stability_constant = param['stability_constant']
+        if self.optimization_method == 'RMSPropNesterov':
+            if not 0 <= self.rho < 1:
+                raise ValueError('rho must satisfy 0 <= rho < 1')
+            if not 0 <= self.alpha < 1:
+                raise ValueError('alpha must satisfy 0 <= alpha < 1')
+            if not np.isfinite(self.stability_constant) or self.stability_constant <= 0:
+                raise ValueError('stability_constant must be finite and positive')
         self.a = dict()
 
         if self.optimization_method=='Adam':
@@ -57,11 +70,11 @@ class NN:
                 self.b[k] = 2 * np.random.rand(height, 1) / np.sqrt(width) - 1 / np.sqrt(width)
             method = self.optimization_method
 
-            if method == 'Momentum':
+            if method in ('Momentum', 'RMSPropNesterov'):
                 self.vW[k] = np.zeros((height, width), dtype=float)
                 self.vb[k] = np.zeros((height, 1), dtype=float)
 
-            if method == 'AdaGrad' or method == 'RMSProp' or method == 'Adam':
+            if method in ('AdaGrad', 'RMSProp', 'Adam', 'RMSPropNesterov'):
                 self.rW[k] = np.zeros((height, width), dtype=float)
                 self.rb[k] = np.zeros((height, 1), dtype=float)
 
@@ -76,11 +89,14 @@ class NN:
                 self.Gamma[k] = 1
                 self.Beta[k] = 0
                 self.vecNum = 0
+                if method == 'RMSPropNesterov':
+                    self.vGamma[k] = 0.0
+                    self.vBeta[k] = 0.0
                 if  method == 'Momentum':
                     self.vGamma[k] = 1
                     self.vBeta[k] = 0
 
-                if method == 'AdaGrad' or method == 'RMSProp' or method == 'Adam':
+                if method in ('AdaGrad', 'RMSProp', 'Adam', 'RMSPropNesterov'):
                     self.rW[k] = np.zeros((height, width), dtype=float)
                     self.rb[k] = np.zeros((height, 1), dtype=float)
                     self.rGamma[k] = 0
