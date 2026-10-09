@@ -135,6 +135,6 @@ if os.path.exists('storedNN_Chess_Ours.npz'):
     ax = fig.add_subplot(111)
     ax.plot(falsePositive, truePositive)
     plt.show()
-    plt.savefig('ROC.png')
+    plt.savefig('ROC_Ours.png')
 
 

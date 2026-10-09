@@ -1,0 +1,59 @@
+===== Operating System =====
+Distribution: Ubuntu 22.04.5 LTS
+Kernel: 6.8.0-138-generic
+Architecture: x86_64
+
+===== CPU =====
+CPU(s): 192
+Model name: Intel(R) Xeon(R) Platinum 8488C
+Thread(s) per core: 2
+Core(s) per socket: 48
+Socket(s): 2
+CPU max MHz: 3800.0000
+Available processing units (nproc): 192
+
+===== Memory =====
+               total        used        free      shared  buff/cache   available
+Mem:           251Gi       179Gi       1.4Gi        19Gi        70Gi        50Gi
+Swap:          2.0Gi       2.0Gi       0.0Ki
+
+===== Storage =====
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda2       439G  353G   64G  85% /
+NAME      SIZE MODEL                               ROTA TYPE
+loop0       4K                                        0 loop
+loop1      74M                                        0 loop
+loop2      74M                                        0 loop
+loop3    66.8M                                        0 loop
+loop4    66.8M                                        0 loop
+loop5   262.2M                                        0 loop
+loop7   505.1M                                        0 loop
+loop8   531.5M                                        0 loop
+loop9   614.5M                                        0 loop
+loop10   91.7M                                        0 loop
+loop11    402M                                        0 loop
+loop12   50.3M                                        0 loop
+loop13   11.8M                                        0 loop
+loop14   12.2M                                        0 loop
+loop15   44.7M                                        0 loop
+loop16    500K                                        0 loop
+loop17    828K                                        0 loop
+loop18  262.3M                                        0 loop
+sda     447.1G SAMSUNG MZ7L3480HCHQ-00B7C             0 disk
+sdb      14.6T ST16000NM001G-2KK103                   1 disk
+nvme0n1   3.5T Dell DC NVMe ISE 7450 RI U.2 3.84TB    0 disk
+
+===== Software =====
+Python: Python 3.12.14
+pip: pip 26.2.1 from /home/wzc/miniconda3/envs/ml/lib/python3.12/site-packages/pip (python 3.12)
+gcc: gcc (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0
+g++: g++ (Ubuntu 11.4.0-1ubuntu1~22.04.3) 11.4.0
+make: GNU Make 4.3
+git: git version 2.55.0
+conda: conda 26.7.2
+
+===== Relevant Python Packages =====
+matplotlib==3.11.2
+numpy==2.5.3
+scikit-learn==1.9.1
+scipy==1.18.1

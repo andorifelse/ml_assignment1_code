@@ -96,7 +96,7 @@ else:
     batch_normalization=1,
     active_function='relu',
     batch_size=50,
-    learning_rate=0.01,
+    learning_rate=0.03,
     optimization_method='RMSPropNesterov',
     objective_function='Cross Entropy',
     rho=0.9,
